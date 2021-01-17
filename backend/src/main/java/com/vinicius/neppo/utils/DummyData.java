@@ -7,6 +7,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DummyData
@@ -100,6 +102,10 @@ public class DummyData
     @PostConstruct
     public void saveTag()
     {
+        List<Artigo> artigos = new ArrayList<Artigo>();
+        artigos.add(artigoRepository.findById(new Long(1)).get());
+        artigos.add(artigoRepository.findById(new Long(3)).get());
+
         Tag tag = new Tag();
         tag.setNome("UmaTagDaPesada");
         tag.setId(new Long(1));
@@ -108,6 +114,12 @@ public class DummyData
         tag = new Tag();
         tag.setNome("UmaTagDaPesada2");
         tag.setId(new Long(2));
+        tagRepository.save(tag);
+
+        tag = new Tag();
+        tag.setNome("UmaTagDaPesada3");
+        tag.setId(new Long(3));
+        tag.setArtigos(artigos);
         tagRepository.save(tag);
     }
 

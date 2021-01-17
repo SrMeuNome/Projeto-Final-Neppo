@@ -47,7 +47,6 @@ public class Artigo
     @JoinColumn(name = "autor")
     private Usuario autor;
 
-    @JsonIgnore
     @ManyToMany()
     @JoinTable(
         name = "artigo_tag",

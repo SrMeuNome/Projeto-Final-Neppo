@@ -29,6 +29,7 @@ public class Usuario
     @Column(name = "ativo", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean ativo;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "autor")
     private List<Artigo> artigos;
 
