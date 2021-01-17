@@ -24,7 +24,7 @@ public class ArtigoController
     }
 
     @GetMapping("/artigos-publicados/{numeroPagina}-{tamanhoPagina}")
-    public Stream<Artigo> exibirArtigosPublicados(@PathVariable("numeroPagina") int numeroPagina, @PathVariable("tamanhoPagina") int tamanhoPagina)
+    public Iterable<Artigo> exibirArtigosPublicados(@PathVariable("numeroPagina") int numeroPagina, @PathVariable("tamanhoPagina") int tamanhoPagina)
     {
         return service.getArtigosPublicados(numeroPagina, tamanhoPagina);
     }

@@ -1,6 +1,5 @@
 package com.vinicius.neppo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -29,10 +28,10 @@ public class Artigo
     private String descricao;
 
     @Column(name = "is_rascunho", nullable = false, columnDefinition = "TINYINT(1)")
-    private boolean is_rascunho;
+    private boolean rascunho;
 
     @Column(name = "is_categoria", nullable = false, columnDefinition = "TINYINT(1)")
-    private boolean is_categoria;
+    private boolean artCategoria;
 
     @ManyToOne()
     @JoinColumn(name = "id_categoria")
@@ -57,14 +56,14 @@ public class Artigo
 
     public Artigo() {}
 
-    public Artigo(long id, String titulo, String conteudo, String descricao, boolean is_rascunho, boolean is_categoria, Categoria categoria, Secao secao, Usuario autor, List<Tag> tags)
+    public Artigo(long id, String titulo, String conteudo, String descricao, boolean rascunho, boolean artCategoria, Categoria categoria, Secao secao, Usuario autor, List<Tag> tags)
     {
         this.id = id;
         this.titulo = titulo;
         this.conteudo = conteudo;
         this.descricao = descricao;
-        this.is_rascunho = is_rascunho;
-        this.is_categoria = is_categoria;
+        this.rascunho = rascunho;
+        this.artCategoria = artCategoria;
         this.categoria = categoria;
         this.secao = secao;
         this.autor = autor;
@@ -111,24 +110,24 @@ public class Artigo
         this.descricao = descricao;
     }
 
-    public boolean isIs_rascunho()
+    public boolean isRascunho()
     {
-        return is_rascunho;
+        return rascunho;
     }
 
-    public void setIs_rascunho(boolean is_rascunho)
+    public void setRascunho(boolean rascunho)
     {
-        this.is_rascunho = is_rascunho;
+        this.rascunho = rascunho;
     }
 
-    public boolean isIs_categoria()
+    public boolean isArtCategoria()
     {
-        return is_categoria;
+        return artCategoria;
     }
 
-    public void setIs_categoria(boolean is_categoria)
+    public void setArtCategoria(boolean artCategoria)
     {
-        this.is_categoria = is_categoria;
+        this.artCategoria = artCategoria;
     }
 
     public Categoria getCategoria()
@@ -178,8 +177,8 @@ public class Artigo
         if (o == null || getClass() != o.getClass()) return false;
         Artigo artigo = (Artigo) o;
         return id == artigo.id &&
-                is_rascunho == artigo.is_rascunho &&
-                is_categoria == artigo.is_categoria &&
+                rascunho == artigo.rascunho &&
+                artCategoria == artigo.artCategoria &&
                 Objects.equals(titulo, artigo.titulo) &&
                 Objects.equals(conteudo, artigo.conteudo) &&
                 Objects.equals(descricao, artigo.descricao) &&
@@ -192,7 +191,7 @@ public class Artigo
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, titulo, conteudo, descricao, is_rascunho, is_categoria, categoria, secao, autor, tags);
+        return Objects.hash(id, titulo, conteudo, descricao, rascunho, artCategoria, categoria, secao, autor, tags);
     }
 
     @Override
@@ -203,8 +202,8 @@ public class Artigo
                 ", titulo='" + titulo + '\'' +
                 ", conteudo='" + conteudo + '\'' +
                 ", desc='" + descricao + '\'' +
-                ", is_rascunho=" + is_rascunho +
-                ", is_categoria=" + is_categoria +
+                ", is_rascunho=" + rascunho +
+                ", is_categoria=" + artCategoria +
                 ", categoria=" + categoria +
                 ", secao=" + secao +
                 ", autor=" + autor +

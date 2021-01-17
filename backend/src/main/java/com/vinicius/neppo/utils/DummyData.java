@@ -131,8 +131,8 @@ public class DummyData
         artigo.setDescricao("Um teste de descrição1");
         artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com"));
         artigo.setConteudo("Esse é um artigo sobre como ser um cara legal meu irmão. Heheheheheheh texto para encher linguiça");
-        artigo.setIs_categoria(true);
-        artigo.setIs_rascunho(true);
+        artigo.setArtCategoria(true);
+        artigo.setRascunho(true);
         artigo.setCategoria(categoriaRepository.findById(new Long(1)).get());
         artigo.setId(new Long(1));
         artigoRepository.save(artigo);
@@ -142,8 +142,8 @@ public class DummyData
         artigo.setDescricao("Um teste de descrição2");
         artigo.setAutor(usuarioRepository.findByEmail("user@teste.com"));
         artigo.setConteudo("Esse é mais um artigo sobre como ser um cara legal meu irmão. Mais texto para encher linguiça");
-        artigo.setIs_categoria(true);
-        artigo.setIs_rascunho(true);
+        artigo.setArtCategoria(true);
+        artigo.setRascunho(true);
         artigo.setCategoria(categoriaRepository.findById(new Long(1)).get());
         artigo.setId(new Long(2));
         artigoRepository.save(artigo);
@@ -152,8 +152,8 @@ public class DummyData
         artigo.setTitulo("Esse artigo é de uma seção!");
         artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com"));
         artigo.setConteudo("Esse foi feito para pertencer a uma seção");
-        artigo.setIs_categoria(false);
-        artigo.setIs_rascunho(false);
+        artigo.setArtCategoria(false);
+        artigo.setRascunho(false);
         artigo.setSecao(secaoRepository.findById(new Long(1)).get());
         artigo.setId(new Long(3));
         artigoRepository.save(artigo);
@@ -162,8 +162,8 @@ public class DummyData
         artigo.setTitulo("Esse artigo é de uma seção 2!");
         artigo.setAutor(usuarioRepository.findByEmail("teste1@teste.com"));
         artigo.setConteudo("Esse foi feito para pertencer a uma seção 2");
-        artigo.setIs_categoria(false);
-        artigo.setIs_rascunho(true);
+        artigo.setArtCategoria(false);
+        artigo.setRascunho(true);
         artigo.setSecao(secaoRepository.findById(new Long(1)).get());
         artigo.setId(new Long(4));
         artigoRepository.save(artigo);

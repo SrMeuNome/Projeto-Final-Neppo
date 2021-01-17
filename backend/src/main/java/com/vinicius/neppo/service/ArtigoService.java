@@ -31,16 +31,28 @@ public class ArtigoService
     }
 
     @Transactional(readOnly = true)
+    public Iterable<Artigo> getArtigosPublicados(int numeroPagina, int tamanhoPagina)
+    {
+        if (tamanhoPagina>50) tamanhoPagina = 50;
+        if (tamanhoPagina<5) tamanhoPagina = 5;
+
+        Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
+        Iterable<Artigo> artigos = artigoRepository.findAllByRascunhoFalse(pageable);
+        return artigos;
+    }
+
+    /*@Transactional(readOnly = true)
     public Stream<Artigo> getArtigosPublicados(int numeroPagina, int tamanhoPagina)
     {
         if (tamanhoPagina>50) tamanhoPagina = 50;
         if (tamanhoPagina<5) tamanhoPagina = 5;
+
         Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
         Iterable<Artigo> artigos = artigoRepository.findAll(pageable);
         Stream<Artigo> artigosStream = StreamSupport.stream(artigos.spliterator(), true);
         return artigosStream
                 .filter(artigo -> artigo.isIs_rascunho() == false);
-    }
+    }*/
 
     @Transactional(readOnly = true)
     public Optional<Artigo> getArtigoById(Long id)
