@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "perfis")
-public class Perfil
+public class Perfil extends AbstractEntity
 {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -20,7 +20,7 @@ public class Perfil
     @OneToMany(mappedBy = "perfil")
     private List<Usuario> usuarios;
 
-    public Perfil() {}
+    public Perfil() { super(); }
 
     public Perfil(TipoPerfil tipoPerfil)
     {

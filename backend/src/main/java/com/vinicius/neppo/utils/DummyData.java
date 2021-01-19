@@ -32,6 +32,16 @@ public class DummyData
     UsuarioRepository usuarioRepository;
 
     @PostConstruct
+    public void saveData()
+    {
+        savePerfil();
+        saveUsuario();
+        saveCategoria();
+        saveSecao();
+        saveTag();
+        saveArtigo();
+    }
+
     public void savePerfil()
     {
         Perfil perfil = new Perfil(TipoPerfil.ADMIN);
@@ -41,7 +51,6 @@ public class DummyData
         perfilRepository.save(perfil);
     }
 
-    @PostConstruct
     public void saveUsuario()
     {
         Usuario usuario = new Usuario();
@@ -53,8 +62,9 @@ public class DummyData
         usuario.setPerfil(perfil);
         usuarioRepository.save(usuario);
 
+        usuario = new Usuario();
         perfil = perfilRepository.findById(new Long(2)).get();
-        usuario.setId(new Long(4));
+        usuario.setId(new Long(2));
         usuario.setEmail("user@teste.com");
         usuario.setSenha(new BCryptPasswordEncoder().encode("123456"));
         usuario.setAtivo(true);
@@ -62,7 +72,6 @@ public class DummyData
         usuarioRepository.save(usuario);
     }
 
-    @PostConstruct
     public void saveCategoria()
     {
         Categoria categoria = new Categoria();
@@ -72,6 +81,7 @@ public class DummyData
         categoria.setId(new Long(1));
         categoriaRepository.save(categoria);
 
+        categoria = new Categoria();
         categoria.setNome("Categoria2");
         categoria.setDescricao("Testando uma descrição 2");
         categoria.setLink("Teste Link 2");
@@ -79,7 +89,6 @@ public class DummyData
         categoriaRepository.save(categoria);
     }
 
-    @PostConstruct
     public void saveSecao()
     {
         Secao secao = new Secao();
@@ -88,24 +97,21 @@ public class DummyData
         secao.setId(new Long(1));
         secaoRepository.save(secao);
 
+        secao = new Secao();
         secao.setNome("Seção2");
         secao.setCategoria(categoriaRepository.findById(new Long(1)).get());
         secao.setId(new Long(2));
         secaoRepository.save(secao);
 
+        secao = new Secao();
         secao.setNome("Seção3");
         secao.setCategoria(categoriaRepository.findById(new Long(1)).get());
         secao.setId(new Long(3));
         secaoRepository.save(secao);
     }
 
-    @PostConstruct
     public void saveTag()
     {
-        List<Artigo> artigos = new ArrayList<Artigo>();
-        artigos.add(artigoRepository.findById(new Long(1)).get());
-        artigos.add(artigoRepository.findById(new Long(3)).get());
-
         Tag tag = new Tag();
         tag.setNome("UmaTagDaPesada");
         tag.setId(new Long(1));
@@ -119,13 +125,15 @@ public class DummyData
         tag = new Tag();
         tag.setNome("UmaTagDaPesada3");
         tag.setId(new Long(3));
-        tag.setArtigos(artigos);
         tagRepository.save(tag);
     }
 
-    @PostConstruct
     public void saveArtigo()
     {
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.add(tagRepository.findById(new Long(1)).get());
+        tags.add(tagRepository.findById(new Long(2)).get());
+
         Artigo artigo = new Artigo();
         artigo.setTitulo("Como ter um artigo de sucesso!");
         artigo.setDescricao("Um teste de descrição1");
@@ -134,8 +142,13 @@ public class DummyData
         artigo.setArtCategoria(true);
         artigo.setRascunho(true);
         artigo.setCategoria(categoriaRepository.findById(new Long(1)).get());
+        artigo.setTags(tags);
         artigo.setId(new Long(1));
         artigoRepository.save(artigo);
+
+        tags = new ArrayList<Tag>();
+        tags.add(tagRepository.findById(new Long(3)).get());
+        tags.add(tagRepository.findById(new Long(2)).get());
 
         artigo = new Artigo();
         artigo.setTitulo("Como ter um artigo de sucesso 2!");
@@ -145,6 +158,7 @@ public class DummyData
         artigo.setArtCategoria(true);
         artigo.setRascunho(true);
         artigo.setCategoria(categoriaRepository.findById(new Long(1)).get());
+        artigo.setTags(tags);
         artigo.setId(new Long(2));
         artigoRepository.save(artigo);
 
@@ -160,7 +174,7 @@ public class DummyData
 
         artigo = new Artigo();
         artigo.setTitulo("Esse artigo é de uma seção 2!");
-        artigo.setAutor(usuarioRepository.findByEmail("teste1@teste.com"));
+        artigo.setAutor(usuarioRepository.findByEmail("user@teste.com"));
         artigo.setConteudo("Esse foi feito para pertencer a uma seção 2");
         artigo.setArtCategoria(false);
         artigo.setRascunho(true);

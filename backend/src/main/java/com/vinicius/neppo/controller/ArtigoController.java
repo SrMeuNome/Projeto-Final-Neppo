@@ -17,16 +17,55 @@ public class ArtigoController
     @Autowired
     ArtigoService service;
 
-    @GetMapping("/{numeroPagina}/{tamanhoPagina}")
-    public Iterable<Artigo> exibirArtigos(@PathVariable("numeroPagina") int numeroPagina, @PathVariable("tamanhoPagina") int tamanhoPagina)
+    @GetMapping
+    public Iterable<Artigo> exibirArtigos(@RequestParam(name = "pagina") int numeroPagina,
+                                          @RequestParam(name = "tamanho") int tamanhoPagina,
+                                          @RequestParam(name = "texto", defaultValue = "", required = false) String texto,
+                                          @RequestParam(name = "tags", required = false) Long[] tags)
     {
-        return service.getArtigos(numeroPagina, tamanhoPagina);
+        if (texto.isEmpty() && tags == null)
+        {
+            return service.getArtigos(numeroPagina, tamanhoPagina);
+        }
+        else if (!texto.isEmpty() && tags == null)
+        {
+            return service.getArtigosByText(numeroPagina, tamanhoPagina, texto);
+        }
+        else if (texto.isEmpty() && tags != null)
+        {
+            return service.getArtigosByTags(numeroPagina, tamanhoPagina, tags);
+        }
+        else
+        {
+            return service.getArtigosByTextAndTags(numeroPagina, tamanhoPagina, texto, tags);
+        }
+
     }
 
-    @GetMapping("/artigos-publicados/{numeroPagina}-{tamanhoPagina}")
-    public Iterable<Artigo> exibirArtigosPublicados(@PathVariable("numeroPagina") int numeroPagina, @PathVariable("tamanhoPagina") int tamanhoPagina)
+    @GetMapping("/artigos-publicados")
+    public Iterable<Artigo> exibirArtigosPublicados(
+            @RequestParam(name = "pagina") int numeroPagina,
+            @RequestParam(name = "tamanho") int tamanhoPagina,
+            @RequestParam(name = "texto",defaultValue = "", required = false) String texto,
+            @RequestParam(name = "tags", required = false) Long[] tags)
     {
-        return service.getArtigosPublicados(numeroPagina, tamanhoPagina);
+        if (texto.isEmpty() && tags == null)
+        {
+            return service.getArtigosPublicados(numeroPagina, tamanhoPagina);
+        }
+        else if (!texto.isEmpty() && tags == null)
+        {
+            return service.getArtigosPublicadosByText(numeroPagina, tamanhoPagina, texto);
+        }
+        else if (texto.isEmpty() && tags != null)
+        {
+            return service.getArtigosPublicadosByTags(numeroPagina, tamanhoPagina, tags);
+        }
+        else
+        {
+            //return service.getArtigosPublicadosByTextAndTags(numeroPagina, tamanhoPagina, texto, tags);
+            return service.getArtigosPublicadosByTextAndTagsTeste(numeroPagina, tamanhoPagina, texto, tags);
+        }
     }
 
     @GetMapping("/{id}")

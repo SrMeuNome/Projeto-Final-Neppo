@@ -10,10 +10,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tags", indexes = @Index(name = "idx_tags_nome", columnList = "nome"))
-public class Tag
+public class Tag extends AbstractEntity
 {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @Column(name = "nome", nullable = false)
     @Length(max = 100)
@@ -29,24 +27,7 @@ public class Tag
     )
     private List<Artigo> artigos;
 
-    public Tag() {}
-
-    public Tag(Long id, String nome, List<Artigo> artigos)
-    {
-        this.id = id;
-        this.nome = nome;
-        this.artigos = artigos;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
+    public Tag() { super(); }
 
     public String getNome()
     {
@@ -66,32 +47,5 @@ public class Tag
     public void setArtigos(List<Artigo> artigos)
     {
         this.artigos = artigos;
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Tag tag = (Tag) o;
-        return Objects.equals(id, tag.id) &&
-                Objects.equals(nome, tag.nome) &&
-                Objects.equals(artigos, tag.artigos);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(id, nome, artigos);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Tag{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", artigos=" + artigos +
-                '}';
     }
 }

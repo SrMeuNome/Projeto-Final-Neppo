@@ -9,12 +9,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "categorias")
-public class Categoria
+public class Categoria extends  AbstractEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @Column(name = "nome", nullable = false)
     @Length(max = 100)
     private String nome;
@@ -34,27 +30,7 @@ public class Categoria
     @OneToMany(mappedBy = "categoria")
     private List<Artigo> artigos;
 
-    public Categoria() {}
-
-    public Categoria(long id, @Length(max = 100) String nome, @Length(max = 100) String descricao, String link, List<Secao> secoes, List<Artigo> artigos)
-    {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.link = link;
-        this.secoes = secoes;
-        this.artigos = artigos;
-    }
-
-    public long getId()
-    {
-        return id;
-    }
-
-    public void setId(long id)
-    {
-        this.id = id;
-    }
+    public Categoria() { super(); }
 
     public String getNome()
     {
@@ -104,38 +80,5 @@ public class Categoria
     public void setArtigos(List<Artigo> artigos)
     {
         this.artigos = artigos;
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
-        return id == categoria.id &&
-                Objects.equals(nome, categoria.nome) &&
-                Objects.equals(descricao, categoria.descricao) &&
-                Objects.equals(link, categoria.link) &&
-                Objects.equals(secoes, categoria.secoes) &&
-                Objects.equals(artigos, categoria.artigos);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(id, nome, descricao, link, secoes, artigos);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Categoria{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", link='" + link + '\'' +
-                ", secoes=" + secoes +
-                ", artigos=" + artigos +
-                '}';
     }
 }

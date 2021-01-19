@@ -12,7 +12,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
-    private static final String[] AUTH_LIST = { "/", "/artigos/{numeroPagina}/{tamanhoPagina}", "/artigos/artigos-publicados/{numeroPagina}-{tamanhoPagina}", "/artigos/{id}" };
+    private static final String[] AUTH_LIST = { "/", "/artigos", "/artigos/artigos-publicados", "/artigos/{id}" };
     private static final String[] AUTH_USER_LIST = { "/login", "/logiout" };
     private static final String[] AUTH_ADMIN_LIST = { "/teste" };
 

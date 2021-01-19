@@ -5,43 +5,27 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "secoes")
-public class Secao
+public class Secao extends AbstractEntity
 {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
-
     @Column(name = "nome")
     @Length(max = 100)
     private String nome;
 
     @JsonIgnore
-    @NotNull
     @ManyToOne()
-    @JoinColumn(name = "id_categoria")
+    @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
-    public Secao() {}
+    @JsonIgnore
+    @OneToMany(mappedBy = "secao")
+    private List<Artigo> artigos;
 
-    public Secao(long id, @Length(max = 100) String nome, @NotNull Categoria categoria)
-    {
-        Id = id;
-        this.nome = nome;
-        this.categoria = categoria;
-    }
-
-    public long getId()
-    {
-        return Id;
-    }
-
-    public void setId(long id)
-    {
-        Id = id;
-    }
+    public Secao() { super(); }
 
     public String getNome()
     {
@@ -63,30 +47,13 @@ public class Secao
         this.categoria = categoria;
     }
 
-    @Override
-    public boolean equals(Object o)
+    public List<Artigo> getArtigos()
     {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Secao secao = (Secao) o;
-        return Id == secao.Id &&
-                Objects.equals(nome, secao.nome) &&
-                Objects.equals(categoria, secao.categoria);
+        return artigos;
     }
 
-    @Override
-    public int hashCode()
+    public void setArtigos(List<Artigo> artigos)
     {
-        return Objects.hash(Id, nome, categoria);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Secao{" +
-                "Id=" + Id +
-                ", nome='" + nome + '\'' +
-                ", categoria=" + categoria +
-                '}';
+        this.artigos = artigos;
     }
 }
