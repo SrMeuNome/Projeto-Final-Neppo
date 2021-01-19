@@ -1,13 +1,14 @@
 package com.vinicius.neppo.controller;
 
-import com.vinicius.neppo.model.Artigo;
-import com.vinicius.neppo.service.ArtigoService;
+import com.vinicius.neppo.model.*;
+import com.vinicius.neppo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @CrossOrigin
 @RestController
@@ -16,6 +17,18 @@ public class ArtigoController
 {
     @Autowired
     ArtigoService service;
+
+    @Autowired
+    TagService serviceTag;
+
+    @Autowired
+    SecaoService serviceSecao;
+
+    @Autowired
+    CategoriaService serviceCategoria;
+
+    @Autowired
+    UsuarioService serviceUsuario;
 
     @GetMapping
     public Iterable<Artigo> exibirArtigos(@RequestParam(name = "pagina") int numeroPagina,
@@ -63,8 +76,7 @@ public class ArtigoController
         }
         else
         {
-            //return service.getArtigosPublicadosByTextAndTags(numeroPagina, tamanhoPagina, texto, tags);
-            return service.getArtigosPublicadosByTextAndTagsTeste(numeroPagina, tamanhoPagina, texto, tags);
+            return service.getArtigosPublicadosByTextAndTags(numeroPagina, tamanhoPagina, texto, tags);
         }
     }
 
@@ -74,9 +86,46 @@ public class ArtigoController
         return service.getArtigoById(id);
     }
 
-    /*@GetMapping("/{tags}")
-    public Artigo exibirArtigo(@PathVariable("tags") List<Long> tags)
+    @PostMapping
+    public Optional<Artigo> salvarArtigo(
+            @RequestParam(name = "titulo", required = true) String titulo,
+            @RequestParam(name = "conteudo", required = true) String conteudo,
+            @RequestParam(name = "descricao", required = false) String descricao,
+            @RequestParam(name = "tags", required = false) Long[] tag,
+            @RequestParam(name = "secao", required = false) Long secaoId,
+            @RequestParam(name = "categoria", required = false) Long categoriaId
+    )
     {
-        return service.getArtigoByTags(tags);
-    }*/
+        Artigo artigo = new Artigo();
+        artigo.setTitulo(titulo);
+        artigo.setConteudo(conteudo);
+        artigo.setDescricao(descricao);
+        artigo.setRascunho(true);
+
+        Usuario usuario = serviceUsuario.buscarUsuarioPorEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if(tag != null)
+        {
+            Iterable<Tag> tagsIterable = serviceTag.getTagsById(tag);
+            Collection<Tag> tags = new ArrayList<Tag>();
+            tagsIterable.forEach(tags::add);
+            artigo.setTags(tags);
+        }
+
+        if (secaoId != null)
+        {
+            Optional<Secao> secao = serviceSecao.getById(secaoId);
+            artigo.setSecao(secao.get());
+            artigo.setArtCategoria(false);
+        } else if (categoriaId != null)
+        {
+            Optional<Categoria> categoria = serviceCategoria.getById(categoriaId);
+            artigo.setCategoria(categoria.get());
+            artigo.setArtCategoria(true);
+        }
+
+        artigo.setAutor(usuario);
+
+        return service.salveArtigo(artigo);
+    }
 }

@@ -20,7 +20,7 @@ public class UsuarioService implements UserDetailsService
     @Transactional(readOnly = true)
     public Usuario buscarUsuarioPorEmail(String email)
     {
-        return usuarioRepository.findByEmail(email);
+        return usuarioRepository.findByEmail(email).get();
     }
 
     @Override @Transactional(readOnly = true)

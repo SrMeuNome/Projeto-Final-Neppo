@@ -15,31 +15,25 @@ import java.util.List;
 @Transactional(readOnly = false)
 public interface ArtigoRepository extends JpaRepository<Artigo, Long>
 {
-    List<Artigo> findAllByRascunhoFalse(Pageable pageable);
+    //Artigos geral
+    @Query(value = "SELECT a FROM Artigo a WHERE UPPER(a.titulo) LIKE UPPER(:texto) OR UPPER(a.conteudo) LIKE UPPER(:texto) GROUP BY a.id")
+    Page<Artigo> findAllArtigosByText(@Param("texto") String texto, Pageable pageable);
 
-    List<Artigo> findAllByRascunhoFalseAndTagsIn(Collection<Tag> tags, Pageable pageable);
-
-    List<Artigo> findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCaseAndRascunhoFalseAndTagsIn(String titulo, String conteudo, Collection<Tag> tags, Pageable pageable);
-
-    List<Artigo> findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCaseAndRascunhoFalse(String titulo, String conteudo, Pageable pageable);
-
-    List<Artigo> findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCaseAndTagsIn(@Param("titulo") String titulo, @Param("conteudo") String conteudo, @Param("tags") Collection<Tag> tags, Pageable pageable);
-
-    List<Artigo> findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCase(String titulo, String conteudo, Pageable pageable);
-
-    List<Artigo> findAllByTagsIn(Collection<Tag> tags, Pageable pageable);
-
-    /*@Query(value = "SELECT a.* FROM artigos a, artigo_tag b WHERE UPPER(a.titulo) LIKE UPPER('%:texto%') or UPPER(a.conteudo) LIKE UPPER('%:texto%') AND a.id = b.id_artigo AND b.id_tag in (:tags) GROUP BY a.id;",
-            countQuery = "SELECT COUNT(a.*) FROM artigos a, artigo_tag b WHERE UPPER(a.titulo) LIKE UPPER('%:texto%') or UPPER(a.conteudo) LIKE UPPER('%:texto%') AND a.id = b.id_artigo AND b.id_tag in (:tags) GROUP BY a.id;",
-            nativeQuery = true)
-    List<Artigo> findAllArtigosByTextAndTags(@Param("texto") String texto, @Param("tags") Collection<Long> tags, Pageable pageable);
-     AND tags.id in :tags
-     , @Param("tags") Collection<Long> tags
-
-     ,
-    countQuery = "SELECT count(a) FROM Artigo a WHERE (UPPER(a.titulo) LIKE UPPER(:texto) OR UPPER(a.conteudo) LIKE UPPER(:texto)) AND tags in :tags"
-     */
+    @Query(value = "SELECT a FROM Artigo a JOIN a.tags t WHERE t in :tags GROUP BY a.id")
+    Page<Artigo> findAllArtigosByTag(@Param("tags") Collection<Tag> tags, Pageable pageable);
 
     @Query(value = "SELECT a FROM Artigo a JOIN a.tags t WHERE (UPPER(a.titulo) LIKE UPPER(:texto) OR UPPER(a.conteudo) LIKE UPPER(:texto)) AND t in :tags GROUP BY a.id")
     Page<Artigo> findAllArtigosByParameters(@Param("texto") String texto, @Param("tags") Collection<Tag> tags, Pageable pageable);
+
+    //Artigos publicados
+    Page<Artigo> findAllByRascunhoFalse(Pageable pageable);
+
+    @Query(value = "SELECT a FROM Artigo a WHERE (UPPER(a.titulo) LIKE UPPER(:texto) OR UPPER(a.conteudo) LIKE UPPER(:texto)) AND a.rascunho = false GROUP BY a.id")
+    Page<Artigo> findAllArtigosPublicadosByText(@Param("texto") String texto, Pageable pageable);
+
+    @Query(value = "SELECT a FROM Artigo a JOIN a.tags t WHERE t in :tags AND a.rascunho = false GROUP BY a.id")
+    Page<Artigo> findAllArtigosPublicadosByTag(@Param("tags") Collection<Tag> tags, Pageable pageable);
+
+    @Query(value = "SELECT a FROM Artigo a JOIN a.tags t WHERE (UPPER(a.titulo) LIKE UPPER(:texto) OR UPPER(a.conteudo) LIKE UPPER(:texto)) AND t in :tags AND a.rascunho = false GROUP BY a.id")
+    Page<Artigo> findAllArtigosPublicadosByParameters(@Param("texto") String texto, @Param("tags") Collection<Tag> tags, Pageable pageable);
 }

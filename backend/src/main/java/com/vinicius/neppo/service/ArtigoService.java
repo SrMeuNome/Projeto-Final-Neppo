@@ -3,7 +3,6 @@ package com.vinicius.neppo.service;
 import com.vinicius.neppo.model.Artigo;
 import com.vinicius.neppo.model.Tag;
 import com.vinicius.neppo.repository.ArtigoRepository;
-import com.vinicius.neppo.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +20,7 @@ public class ArtigoService
     ArtigoRepository artigoRepository;
 
     @Autowired
-    TagRepository tagRepository;
+    TagService serviceTag;
 
     @Transactional(readOnly = true)
     public Iterable<Artigo> getArtigos(int numeroPagina, int tamanhoPagina)
@@ -39,8 +37,10 @@ public class ArtigoService
         if (tamanhoPagina>50) tamanhoPagina = 50;
         if (tamanhoPagina<5) tamanhoPagina = 5;
 
+        if(texto != null) texto = "%" + texto + "%";
+
         Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
-        return artigoRepository.findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCase(texto, texto, pageable);
+        return artigoRepository.findAllArtigosByText(texto, pageable);
     }
 
     @Transactional(readOnly = true)
@@ -50,15 +50,11 @@ public class ArtigoService
         if (tamanhoPagina<5) tamanhoPagina = 5;
 
         Collection<Tag> tags = new ArrayList<Tag>();
-
-        for (int i = 0; i < listTags.length; i++)
-        {
-            Tag tagAux = tagRepository.findById(listTags[i]).get();
-            if(tagAux != null) tags.add(tagAux);
-        }
+        Iterable<Tag> tagsInterable = serviceTag.getTagsById(listTags);
+        tagsInterable.forEach(tags::add);
 
         Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
-        return artigoRepository.findAllByTagsIn(tags, pageable);
+        return artigoRepository.findAllArtigosByTag(tags, pageable);
     }
 
     @Transactional(readOnly = true)
@@ -70,15 +66,8 @@ public class ArtigoService
         if(texto != null) texto = "%" + texto + "%";
 
         Collection<Tag> tags = new ArrayList<Tag>();
-        //Collection<Long> tags = new ArrayList<Long>();
-
-        for (int i = 0; i < listTags.length; i++)
-        {
-            Tag tagAux = tagRepository.findById(listTags[i]).get();
-            if(tagAux != null && tagAux.getArtigos() != null) tags.add(tagAux);
-            System.out.println(tagAux.toString());
-            //tags.add(listTags[i]);
-        }
+        Iterable<Tag> tagsInterable = serviceTag.getTagsById(listTags);
+        tagsInterable.forEach(tags::add);
 
         Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
         return artigoRepository.findAllArtigosByParameters(texto, tags, pageable);
@@ -101,9 +90,10 @@ public class ArtigoService
         if (tamanhoPagina>50) tamanhoPagina = 50;
         if (tamanhoPagina<5) tamanhoPagina = 5;
 
+        if(texto != null) texto = "%" + texto + "%";
+
         Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
-        Iterable<Artigo> artigos = artigoRepository
-                .findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCaseAndRascunhoFalse(texto, texto, pageable);
+        Iterable<Artigo> artigos = artigoRepository.findAllArtigosPublicadosByText(texto, pageable);
         return artigos;
     }
 
@@ -114,16 +104,11 @@ public class ArtigoService
         if (tamanhoPagina<5) tamanhoPagina = 5;
 
         Collection<Tag> tags = new ArrayList<Tag>();
-
-        for (int i = 0; i < listTags.length; i++)
-        {
-            Tag tagAux = tagRepository.findById(listTags[i]).get();
-            if(tagAux != null) tags.add(tagAux);
-        }
+        Iterable<Tag> tagsInterable = serviceTag.getTagsById(listTags);
+        tagsInterable.forEach(tags::add);
 
         Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
-        Iterable<Artigo> artigos = artigoRepository
-                .findAllByRascunhoFalseAndTagsIn(tags, pageable);
+        Iterable<Artigo> artigos = artigoRepository.findAllArtigosPublicadosByTag(tags, pageable);
         return artigos;
     }
 
@@ -134,52 +119,16 @@ public class ArtigoService
         if (tamanhoPagina>50) tamanhoPagina = 50;
         if (tamanhoPagina<5) tamanhoPagina = 5;
 
-        Collection<Tag> tags = new ArrayList<Tag>();
-
-        for (int i = 0; i < listTags.length; i++)
-        {
-            Tag tagAux = tagRepository.findById(listTags[i]).get();
-            if(tagAux != null) tags.add(tagAux);
-        }
-
-        Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
-        Iterable<Artigo> artigos = artigoRepository
-                .findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCaseAndRascunhoFalseAndTagsIn(texto, texto, tags, pageable);
-        return artigos;
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable<Artigo> getArtigosPublicadosByTextAndTagsTeste(int numeroPagina, int tamanhoPagina, String texto, Long[] listTags)
-    {
-        if (tamanhoPagina>50) tamanhoPagina = 50;
-        if (tamanhoPagina<5) tamanhoPagina = 5;
+        if(texto != null) texto = "%" + texto + "%";
 
         Collection<Tag> tags = new ArrayList<Tag>();
-
-        for (int i = 0; i < listTags.length; i++)
-        {
-            Tag tagAux = tagRepository.findById(listTags[i]).get();
-            if(tagAux != null) tags.add(tagAux);
-        }
+        Iterable<Tag> tagsInterable = serviceTag.getTagsById(listTags);
+        tagsInterable.forEach(tags::add);
 
         Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
-        Iterable<Artigo> artigos = artigoRepository
-                .findAllByTituloContainingIgnoreCaseOrConteudoContainingIgnoreCaseAndRascunhoFalseAndTagsIn(texto, texto, tags, pageable);
+        Iterable<Artigo> artigos = artigoRepository.findAllArtigosPublicadosByParameters(texto, tags, pageable);
         return artigos;
     }
-
-    /*@Transactional(readOnly = true)
-    public Stream<Artigo> getArtigosPublicados(int numeroPagina, int tamanhoPagina)
-    {
-        if (tamanhoPagina>50) tamanhoPagina = 50;
-        if (tamanhoPagina<5) tamanhoPagina = 5;
-
-        Pageable pageable = PageRequest.of(numeroPagina, tamanhoPagina);
-        Iterable<Artigo> artigos = artigoRepository.findAll(pageable);
-        Stream<Artigo> artigosStream = StreamSupport.stream(artigos.spliterator(), true);
-        return artigosStream
-                .filter(artigo -> artigo.isIs_rascunho() == false);
-    }*/
 
     @Transactional(readOnly = true)
     public Optional<Artigo> getArtigoById(Long id)
@@ -187,9 +136,10 @@ public class ArtigoService
         return artigoRepository.findById(id);
     }
 
-    /*@Transactional(readOnly = true)
-    public Artigo getArtigoByTags(Set<Long> tags)
+    @Transactional(readOnly = false)
+    public Optional<Artigo> salveArtigo(Artigo artigo)
     {
-        return artigoRepository.findAll().set;
-    }*/
+        artigoRepository.save(artigo);
+        return Optional.of(artigo);
+    }
 }

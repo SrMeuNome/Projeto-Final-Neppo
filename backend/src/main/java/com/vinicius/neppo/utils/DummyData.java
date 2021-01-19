@@ -137,7 +137,7 @@ public class DummyData
         Artigo artigo = new Artigo();
         artigo.setTitulo("Como ter um artigo de sucesso!");
         artigo.setDescricao("Um teste de descrição1");
-        artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com"));
+        artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com").get());
         artigo.setConteudo("Esse é um artigo sobre como ser um cara legal meu irmão. Heheheheheheh texto para encher linguiça");
         artigo.setArtCategoria(true);
         artigo.setRascunho(true);
@@ -153,7 +153,7 @@ public class DummyData
         artigo = new Artigo();
         artigo.setTitulo("Como ter um artigo de sucesso 2!");
         artigo.setDescricao("Um teste de descrição2");
-        artigo.setAutor(usuarioRepository.findByEmail("user@teste.com"));
+        artigo.setAutor(usuarioRepository.findByEmail("user@teste.com").get());
         artigo.setConteudo("Esse é mais um artigo sobre como ser um cara legal meu irmão. Mais texto para encher linguiça");
         artigo.setArtCategoria(true);
         artigo.setRascunho(true);
@@ -164,7 +164,7 @@ public class DummyData
 
         artigo = new Artigo();
         artigo.setTitulo("Esse artigo é de uma seção!");
-        artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com"));
+        artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com").get());
         artigo.setConteudo("Esse foi feito para pertencer a uma seção");
         artigo.setArtCategoria(false);
         artigo.setRascunho(false);
@@ -174,7 +174,7 @@ public class DummyData
 
         artigo = new Artigo();
         artigo.setTitulo("Esse artigo é de uma seção 2!");
-        artigo.setAutor(usuarioRepository.findByEmail("user@teste.com"));
+        artigo.setAutor(usuarioRepository.findByEmail("user@teste.com").get());
         artigo.setConteudo("Esse foi feito para pertencer a uma seção 2");
         artigo.setArtCategoria(false);
         artigo.setRascunho(true);
