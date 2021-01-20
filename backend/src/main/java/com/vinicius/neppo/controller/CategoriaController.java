@@ -31,15 +31,6 @@ public class CategoriaController
         return service.getCategorias(numeroPagina, tamanhoPagina);
     }
 
-    @GetMapping("/publicados")
-    public Iterable<Categoria> exibirCategoriasPublicados(
-            @RequestParam(name = "pagina") int numeroPagina,
-            @RequestParam(name = "tamanho") int tamanhoPagina
-    )
-    {
-        return service.getCategorias(numeroPagina, tamanhoPagina);
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public Optional<Categoria> exibirCategoria(@PathVariable(name = "id") Long id)

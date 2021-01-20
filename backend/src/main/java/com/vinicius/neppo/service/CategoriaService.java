@@ -12,6 +12,7 @@ public interface CategoriaService
 
     public Page<Categoria> getCategorias(int numeroPagina, int tamanhoPagina);
 
+
     public Optional<Categoria> salvarCategoria(Categoria categoria);
 
     public void deletarCategoria(Long id);

@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
@@ -102,6 +103,13 @@ public class AuthenticationController {
 		String refreshedToken = jwtTokenUtil.refreshToken(token.get());
 		response.setData(new TokenDto(refreshedToken));
 		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping(value = "/detalhes")
+	public Object retornarUsuarioLogado()
+	{
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getPrincipal();
 	}
 
 }
