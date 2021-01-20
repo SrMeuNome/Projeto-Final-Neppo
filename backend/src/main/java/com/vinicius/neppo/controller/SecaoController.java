@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -23,6 +24,21 @@ public class SecaoController
     CategoriaService categoriaService;
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/publicadas")
+    public Iterable<Secao> exibirSecoesPublicas(
+            @RequestParam(name = "pagina") int numeroPagina,
+            @RequestParam(name = "tamanho") int tamanhoPagina
+    )
+    {
+        Iterable<Secao> secoes = service.getSecoes(numeroPagina, tamanhoPagina);
+            secoes.forEach(secao -> secao.setArtigos(
+                    secao.getArtigos().stream()
+                    .filter(artigo -> artigo.isRascunho() == false)
+                    .collect(Collectors.toList())
+            ));
+        return secoes;
+    }
+
     @GetMapping
     public Iterable<Secao> exibirSecoes(
             @RequestParam(name = "pagina") int numeroPagina,

@@ -4,14 +4,15 @@ import com.vinicius.neppo.model.Artigo;
 import com.vinicius.neppo.model.Categoria;
 import com.vinicius.neppo.model.Secao;
 import com.vinicius.neppo.service.CategoriaService;
-import com.vinicius.neppo.service.SecaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sun.swing.SwingUtilities2;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @CrossOrigin
 @RestController
@@ -29,6 +30,28 @@ public class CategoriaController
     )
     {
         return service.getCategorias(numeroPagina, tamanhoPagina);
+    }
+
+    @GetMapping("/publicadas")
+    public Iterable<Categoria> exibirCategoriasPublicas(
+            @RequestParam(name = "pagina") int numeroPagina,
+            @RequestParam(name = "tamanho") int tamanhoPagina
+    )
+    {
+        Iterable<Categoria> categorias = service.getCategorias(numeroPagina, tamanhoPagina);
+        categorias.forEach(categoria -> categoria.setArtigos(
+                    categoria.getArtigos().stream()
+                .filter(artigo -> artigo.isRascunho() == false)
+                .collect(Collectors.toList())
+            ));
+        categorias.forEach(categoria -> {
+            categoria.getSecoes().forEach(secao -> secao.setArtigos(
+                    secao.getArtigos().stream()
+                        .filter(artigo -> artigo.isRascunho() == false)
+                        .collect(Collectors.toList())
+            ));
+        });
+        return categorias;
     }
 
     @PreAuthorize("hasRole('ADMIN')")

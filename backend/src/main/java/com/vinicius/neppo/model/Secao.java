@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Objects;
+import java.util.Collection;
 
 @Entity
 @Table(name = "secoes")
@@ -22,7 +20,7 @@ public class Secao extends AbstractEntity
     private Categoria categoria;
 
     @OneToMany(mappedBy = "secao")
-    private List<Artigo> artigos;
+    private Collection<Artigo> artigos;
 
     public Secao() { super(); }
 
@@ -46,12 +44,12 @@ public class Secao extends AbstractEntity
         this.categoria = categoria;
     }
 
-    public List<Artigo> getArtigos()
+    public Collection<Artigo> getArtigos()
     {
         return artigos;
     }
 
-    public void setArtigos(List<Artigo> artigos)
+    public void setArtigos(Collection<Artigo> artigos)
     {
         this.artigos = artigos;
     }
