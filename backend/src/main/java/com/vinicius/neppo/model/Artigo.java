@@ -1,11 +1,11 @@
 package com.vinicius.neppo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "artigos")
@@ -29,10 +29,12 @@ public class Artigo extends  AbstractEntity
     @Column(name = "is_categoria", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean artCategoria;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "id_secao")
     private Secao secao;
@@ -41,6 +43,12 @@ public class Artigo extends  AbstractEntity
     @ManyToOne()
     @JoinColumn(name = "autor")
     private Usuario autor;
+
+    @Column(name = "qtd_like", nullable = false)
+    private int qtdLike;
+
+    @Column(name = "qtd_not_like", nullable = false)
+    private int qtdNotLike;
 
     @ManyToMany()
     @JoinTable(
@@ -140,5 +148,35 @@ public class Artigo extends  AbstractEntity
     public void setTags(Collection<Tag> tags)
     {
         this.tags = tags;
+    }
+
+    public int getQtdLike()
+    {
+        return qtdLike;
+    }
+
+    public void setQtdLike(int qtdLike)
+    {
+        this.qtdLike = qtdLike;
+    }
+
+    public int getQtdNotLike()
+    {
+        return qtdNotLike;
+    }
+
+    public void setQtdNotLike(int qtdNotLike)
+    {
+        this.qtdNotLike = qtdNotLike;
+    }
+
+    public void addLike()
+    {
+        this.qtdLike += 1;
+    }
+
+    public void addNotLike()
+    {
+        this.qtdNotLike += 1;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table(name = "secoes")
 public class Secao extends AbstractEntity
 {
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false)
     @Length(max = 100)
     private String nome;
 
@@ -21,7 +21,6 @@ public class Secao extends AbstractEntity
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "secao")
     private List<Artigo> artigos;
 

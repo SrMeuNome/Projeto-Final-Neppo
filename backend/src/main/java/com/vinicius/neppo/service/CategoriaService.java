@@ -1,22 +1,18 @@
 package com.vinicius.neppo.service;
 
+import com.vinicius.neppo.model.Artigo;
 import com.vinicius.neppo.model.Categoria;
-import com.vinicius.neppo.repository.CategoriaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
-@Service
-public class CategoriaService
+public interface CategoriaService
 {
-    @Autowired
-    CategoriaRepository categoriaRepository;
+    public Optional<Categoria> getById(Long id);
 
-    @Transactional(readOnly = true)
-    public Optional<Categoria> getById(Long id)
-    {
-        return categoriaRepository.findById(id);
-    }
+    public Page<Categoria> getCategorias(int numeroPagina, int tamanhoPagina);
+
+    public Optional<Categoria> salvarCategoria(Categoria categoria);
+
+    public void deletarCategoria(Long id);
 }

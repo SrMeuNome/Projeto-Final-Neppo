@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tags", indexes = @Index(name = "idx_tags_nome", columnList = "nome"))

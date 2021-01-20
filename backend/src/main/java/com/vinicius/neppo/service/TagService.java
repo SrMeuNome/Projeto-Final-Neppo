@@ -1,28 +1,19 @@
 package com.vinicius.neppo.service;
 
 import com.vinicius.neppo.model.Tag;
-import com.vinicius.neppo.repository.TagRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
-@Service
-public class TagService
+public interface TagService
 {
-    @Autowired
-    TagRepository tagRepository;
+    public Iterable<Tag> getTagsById(Long [] listIds);
 
-    @Transactional(readOnly = true)
-    public Iterable<Tag> getTagsById(Long [] listIds)
-    {
-        Collection<Long> tagsId = new ArrayList<Long>(Arrays.asList(listIds));
-        Iterable<Tag> tags = tagRepository.findAllByIdIn(tagsId);
+    public Optional<Tag> getById(Long id);
 
-        return tags;
-    }
+    public Page<Tag> getTags(int numeroPagina, int tamanhoPagina);
+
+    public Optional<Tag> salvarTag(Tag tag);
+
+    public void deletarTag(Long id);
 }

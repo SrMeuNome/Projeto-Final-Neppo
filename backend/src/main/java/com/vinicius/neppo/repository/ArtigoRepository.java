@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 
 @Transactional(readOnly = false)
 public interface ArtigoRepository extends JpaRepository<Artigo, Long>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,16 +20,14 @@ public class Categoria extends  AbstractEntity
     @Length(max = 100)
     private String descricao;
 
-    @Column(name = "link")
+    @Column(name = "link", nullable = false)
     private String link;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "categoria")
-    private List<Secao> secoes;
+    private Collection<Secao> secoes;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "categoria")
-    private List<Artigo> artigos;
+    private Collection<Artigo> artigos;
 
     public Categoria() { super(); }
 
@@ -62,22 +61,22 @@ public class Categoria extends  AbstractEntity
         this.link = link;
     }
 
-    public List<Secao> getSecoes()
+    public Collection<Secao> getSecoes()
     {
         return secoes;
     }
 
-    public void setSecoes(List<Secao> secoes)
+    public void setSecoes(Collection<Secao> secoes)
     {
         this.secoes = secoes;
     }
 
-    public List<Artigo> getArtigos()
+    public Collection<Artigo> getArtigos()
     {
         return artigos;
     }
 
-    public void setArtigos(List<Artigo> artigos)
+    public void setArtigos(Collection<Artigo> artigos)
     {
         this.artigos = artigos;
     }

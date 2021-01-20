@@ -1,22 +1,18 @@
 package com.vinicius.neppo.service;
 
+import com.vinicius.neppo.model.Categoria;
 import com.vinicius.neppo.model.Secao;
-import com.vinicius.neppo.repository.SecaoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
-@Service
-public class SecaoService
+public interface SecaoService
 {
-    @Autowired
-    SecaoRepository secaoRepository;
+    public Optional<Secao> getById(Long id);
 
-    @Transactional(readOnly = true)
-    public Optional<Secao> getById(Long id)
-    {
-        return secaoRepository.findById(id);
-    }
+    public Page<Secao> getSecoes(int numeroPagina, int tamanhoPagina);
+
+    public Optional<Secao> salvarSecao(Secao secao);
+
+    public void deletarSecao(Long id);
 }

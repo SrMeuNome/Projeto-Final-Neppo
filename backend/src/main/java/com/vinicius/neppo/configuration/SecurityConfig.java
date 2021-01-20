@@ -1,23 +1,24 @@
 package com.vinicius.neppo.configuration;
 
-import com.vinicius.neppo.service.UsuarioService;
+import com.vinicius.neppo.service.impl.UsuarioServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
-    private static final String[] AUTH_LIST = { "/", "/artigos", "/artigos/artigos-publicados", "/artigos/{id}" };
+    private static final String[] AUTH_LIST = { "/", "/artigos", "/artigos/artigos-publicados", "/artigos/{id}"
+    , "/artigos/{id}/like", "/artigos/{id}/notlike", "/categorias", "categorias/{id}/secao/{id_secao}", "categorias/{id}",
+        "/secoes" , "/secoes/{id}", "/tags", "/tags/{id}", "/usuarios", "/usuarios/{id}"};
     private static final String[] AUTH_USER_LIST = { "/login", "/logiout" };
     private static final String[] AUTH_ADMIN_LIST = { "/teste" };
 
     @Autowired
-    UsuarioService usuarioService;
+    UsuarioServiceImp usuarioServiceImp;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception
@@ -38,6 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
-        auth.userDetailsService(usuarioService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(usuarioServiceImp).passwordEncoder(new BCryptPasswordEncoder());
     }
 }

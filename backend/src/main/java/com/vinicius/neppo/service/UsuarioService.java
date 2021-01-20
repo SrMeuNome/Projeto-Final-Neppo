@@ -1,36 +1,19 @@
 package com.vinicius.neppo.service;
 
 import com.vinicius.neppo.model.Usuario;
-import com.vinicius.neppo.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
 
-@Service
-public class UsuarioService implements UserDetailsService
+import java.util.Optional;
+
+public interface UsuarioService
 {
-    @Autowired
-    UsuarioRepository usuarioRepository;
+    public Usuario buscarUsuarioPorEmail(String email);
 
-    @Transactional(readOnly = true)
-    public Usuario buscarUsuarioPorEmail(String email)
-    {
-        return usuarioRepository.findByEmail(email).get();
-    }
+    public Optional<Usuario> getById(Long id);
 
-    @Override @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException
-    {
-        Usuario usuario = buscarUsuarioPorEmail(s);
-        return  new User(
-                usuario.getEmail(),
-                usuario.getSenha(),
-                AuthorityUtils.createAuthorityList(usuario.getPerfil().getDescricao())
-        );
-    }
+    public Page<Usuario> getUsuarios(int numeroPagina, int tamanhoPagina);
+
+    public Optional<Usuario> salvarUsuario(Usuario usuario);
+
+    public void deletarUsuario(Long id);
 }
