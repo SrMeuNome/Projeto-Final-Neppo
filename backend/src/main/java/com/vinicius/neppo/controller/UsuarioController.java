@@ -1,10 +1,10 @@
 package com.vinicius.neppo.controller;
 
-import com.vinicius.neppo.model.Perfil;
+import com.vinicius.neppo.model.TipoPerfil;
 import com.vinicius.neppo.model.Usuario;
-import com.vinicius.neppo.service.PerfilService;
 import com.vinicius.neppo.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +18,9 @@ public class UsuarioController
     @Autowired
     UsuarioService service;
 
-    @Autowired
-    PerfilService perfilService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public Iterable<Usuario> exibirTags(
+    public Iterable<Usuario> exibirUsuarios(
             @RequestParam(name = "pagina") int numeroPagina,
             @RequestParam(name = "tamanho") int tamanhoPagina
     )
@@ -30,6 +28,7 @@ public class UsuarioController
         return service.getUsuarios(numeroPagina, tamanhoPagina);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public Optional<Usuario> exibirUsuario(@PathVariable(name = "id") Long id)
     {
@@ -40,33 +39,34 @@ public class UsuarioController
     public Optional<Usuario> salvarUsuario(
             @RequestParam(value = "email", required = true) String email,
             @RequestParam(value = "senha", required = true) String senha,
-            @RequestParam(value = "perfil", required = true) Long idPerfil
+            @RequestParam(value = "perfil", required = true) Integer idPerfil
     )
     {
         Usuario usuario = new Usuario();
 
-        Perfil perfil = perfilService.getById(idPerfil).get();
+        if (idPerfil == 1) usuario.setPerfil(TipoPerfil.ROLE_ADMIN);
+        if (idPerfil == 2) usuario.setPerfil(TipoPerfil.ROLE_USUARIO);
         usuario.setEmail(email);
         usuario.setSenha(new BCryptPasswordEncoder().encode(senha));
         usuario.setAtivo(true);
-        usuario.setPerfil(perfil);
         return service.salvarUsuario(usuario);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public Optional<Usuario> editarUsuario(
             @PathVariable(name = "id") Long id,
             @RequestParam(value = "email", required = false) String email,
             @RequestParam(value = "senha", required = false) String senha,
-            @RequestParam(value = "perfil", required = false) Long idPerfil
+            @RequestParam(value = "perfil", required = false) Integer idPerfil
     )
     {
         Usuario usuario = service.getById(id).get();
 
         if (idPerfil != null)
         {
-            Perfil perfil = perfilService.getById(idPerfil).get();
-            usuario.setPerfil(perfil);
+            if (idPerfil == 1) usuario.setPerfil(TipoPerfil.ROLE_ADMIN);
+            if (idPerfil == 2) usuario.setPerfil(TipoPerfil.ROLE_USUARIO);
         }
 
         if (email != null) usuario.setEmail(email);
@@ -74,6 +74,7 @@ public class UsuarioController
         return service.salvarUsuario(usuario);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String deletarUsuario(
             @PathVariable(name = "id") Long id

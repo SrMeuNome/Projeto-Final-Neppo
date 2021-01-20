@@ -22,16 +22,16 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
-public class UsuarioServiceImp implements UsuarioService, UserDetailsService
+public class UsuarioServiceImp implements UsuarioService
 {
     @Autowired
     UsuarioRepository usuarioRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public Usuario buscarUsuarioPorEmail(String email)
+    public Optional<Usuario> buscarUsuarioPorEmail(String email)
     {
-        return usuarioRepository.findByEmail(email).get();
+        return usuarioRepository.findByEmail(email);
     }
 
     @Override
@@ -61,16 +61,5 @@ public class UsuarioServiceImp implements UsuarioService, UserDetailsService
     public void deletarUsuario(Long id)
     {
         usuarioRepository.deleteById(id);
-    }
-
-    @Override @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException
-    {
-        Usuario usuario = buscarUsuarioPorEmail(s);
-        return  new User(
-                usuario.getEmail(),
-                usuario.getSenha(),
-                AuthorityUtils.createAuthorityList(usuario.getPerfil().getDescricao())
-        );
     }
 }

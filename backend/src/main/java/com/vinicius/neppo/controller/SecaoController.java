@@ -5,6 +5,7 @@ import com.vinicius.neppo.model.Secao;
 import com.vinicius.neppo.service.CategoriaService;
 import com.vinicius.neppo.service.SecaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,9 +22,9 @@ public class SecaoController
     @Autowired
     CategoriaService categoriaService;
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public Iterable<Secao> exibirCategorias(
+    public Iterable<Secao> exibirSecoes(
             @RequestParam(name = "pagina") int numeroPagina,
             @RequestParam(name = "tamanho") int tamanhoPagina
     )
@@ -31,12 +32,14 @@ public class SecaoController
         return service.getSecoes(numeroPagina, tamanhoPagina);
     }
 
+
     @GetMapping("/{id}")
-    public Optional<Secao> exibirCategoria(@PathVariable(name = "id") Long id)
+    public Optional<Secao> exibirSecao(@PathVariable(name = "id") Long id)
     {
         return service.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Optional<Secao> salvarSecao(
             @RequestParam(value = "nome", required = true) String nome,
@@ -53,6 +56,7 @@ public class SecaoController
         return service.salvarSecao(secao);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public Optional<Secao> editarSecao(
             @PathVariable(name = "id") Long id,
@@ -72,6 +76,7 @@ public class SecaoController
         return service.salvarSecao(secao);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String deletarSecao(
             @PathVariable(name = "id") Long id

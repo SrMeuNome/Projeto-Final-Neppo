@@ -3,6 +3,7 @@ package com.vinicius.neppo.controller;
 import com.vinicius.neppo.model.Tag;
 import com.vinicius.neppo.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class TagController
         return service.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Optional<Tag> salvarTag(@RequestParam(value = "nome", required = true) String nome)
     {
@@ -40,6 +42,7 @@ public class TagController
         return service.salvarTag(tag);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public Optional<Tag> editarTag(
             @PathVariable(name = "id") Long id,
@@ -56,6 +59,7 @@ public class TagController
         return service.salvarTag(tag);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String deletarTag(
             @PathVariable(name = "id") Long id

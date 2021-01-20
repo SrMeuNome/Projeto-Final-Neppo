@@ -20,9 +20,6 @@ public class DummyData
     CategoriaRepository categoriaRepository;
 
     @Autowired
-    PerfilRepository perfilRepository;
-
-    @Autowired
     SecaoRepository secaoRepository;
 
     @Autowired
@@ -34,7 +31,6 @@ public class DummyData
     @PostConstruct
     public void saveData()
     {
-        savePerfil();
         saveUsuario();
         saveCategoria();
         saveSecao();
@@ -42,33 +38,22 @@ public class DummyData
         saveArtigo();
     }
 
-    public void savePerfil()
-    {
-        Perfil perfil = new Perfil(TipoPerfil.ADMIN);
-        perfilRepository.save(perfil);
-
-        perfil = new Perfil(TipoPerfil.USER);
-        perfilRepository.save(perfil);
-    }
-
     public void saveUsuario()
     {
         Usuario usuario = new Usuario();
-        Perfil perfil = perfilRepository.findById(new Long(1)).get();
         usuario.setId(new Long(1));
-        usuario.setEmail("teste@teste.com");
+        usuario.setEmail("admin@teste.com");
         usuario.setSenha(new BCryptPasswordEncoder().encode("123456"));
         usuario.setAtivo(true);
-        usuario.setPerfil(perfil);
+        usuario.setPerfil(TipoPerfil.ROLE_ADMIN);
         usuarioRepository.save(usuario);
 
         usuario = new Usuario();
-        perfil = perfilRepository.findById(new Long(2)).get();
         usuario.setId(new Long(2));
         usuario.setEmail("user@teste.com");
         usuario.setSenha(new BCryptPasswordEncoder().encode("123456"));
         usuario.setAtivo(true);
-        usuario.setPerfil(perfil);
+        usuario.setPerfil(TipoPerfil.ROLE_USUARIO);
         usuarioRepository.save(usuario);
     }
 
@@ -137,7 +122,7 @@ public class DummyData
         Artigo artigo = new Artigo();
         artigo.setTitulo("Como ter um artigo de sucesso!");
         artigo.setDescricao("Um teste de descrição1");
-        artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com").get());
+        artigo.setAutor(usuarioRepository.findByEmail("admin@teste.com").get());
         artigo.setConteudo("Esse é um artigo sobre como ser um cara legal meu irmão. Heheheheheheh texto para encher linguiça");
         artigo.setArtCategoria(true);
         artigo.setRascunho(true);
@@ -164,7 +149,7 @@ public class DummyData
 
         artigo = new Artigo();
         artigo.setTitulo("Esse artigo é de uma seção!");
-        artigo.setAutor(usuarioRepository.findByEmail("teste@teste.com").get());
+        artigo.setAutor(usuarioRepository.findByEmail("admin@teste.com").get());
         artigo.setConteudo("Esse foi feito para pertencer a uma seção");
         artigo.setArtCategoria(false);
         artigo.setRascunho(false);

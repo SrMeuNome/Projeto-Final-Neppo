@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UsuarioService
 {
-    public Usuario buscarUsuarioPorEmail(String email);
+    public Optional<Usuario> buscarUsuarioPorEmail(String email);
 
     public Optional<Usuario> getById(Long id);
 

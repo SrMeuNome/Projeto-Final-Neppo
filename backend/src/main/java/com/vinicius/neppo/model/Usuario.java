@@ -20,9 +20,9 @@ public class Usuario extends AbstractEntity
     @Column(name = "senha", nullable = false)
     private String senha;
 
-    @ManyToOne()
-    @JoinColumn(name = "id_perfil")
-    private Perfil perfil;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "perfil", nullable = false)
+    private TipoPerfil perfil;
 
     @Column(name = "ativo", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean ativo;
@@ -53,12 +53,12 @@ public class Usuario extends AbstractEntity
         this.senha = senha;
     }
 
-    public Perfil getPerfil()
+    public TipoPerfil getPerfil()
     {
         return perfil;
     }
 
-    public void setPerfil(Perfil perfil)
+    public void setPerfil(TipoPerfil perfil)
     {
         this.perfil = perfil;
     }

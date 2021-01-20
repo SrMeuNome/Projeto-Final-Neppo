@@ -3,6 +3,7 @@ package com.vinicius.neppo.controller;
 import com.vinicius.neppo.model.*;
 import com.vinicius.neppo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class ArtigoController
     UsuarioService serviceUsuario;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Iterable<Artigo> exibirArtigos(@RequestParam(name = "pagina") int numeroPagina,
                                           @RequestParam(name = "tamanho") int tamanhoPagina,
                                           @RequestParam(name = "texto", defaultValue = "", required = false) String texto,
@@ -55,7 +57,7 @@ public class ArtigoController
 
     }
 
-    @GetMapping("/artigos-publicados")
+    @GetMapping("/publicados")
     public Iterable<Artigo> exibirArtigosPublicados(
             @RequestParam(name = "pagina") int numeroPagina,
             @RequestParam(name = "tamanho") int tamanhoPagina,
@@ -80,12 +82,14 @@ public class ArtigoController
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public Optional<Artigo> exibirArtigo(@PathVariable("id") Long id)
     {
         return service.getArtigoById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping
     public Optional<Artigo> salvarArtigo(
             @RequestParam(name = "titulo", required = true) String titulo,
@@ -104,7 +108,7 @@ public class ArtigoController
         artigo.setQtdLike(0);
         artigo.setQtdNotLike(0);
 
-        Usuario usuario = serviceUsuario.buscarUsuarioPorEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Usuario usuario = serviceUsuario.buscarUsuarioPorEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get();
 
         if(tag != null)
         {
@@ -131,6 +135,7 @@ public class ArtigoController
         return service.salveArtigo(artigo);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping(path = "/{id}")
     public Optional<Artigo> editarArtigo(
             @PathVariable("id") Long id,
@@ -172,6 +177,7 @@ public class ArtigoController
         return service.salveArtigo(artigo);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/{id}")
     public Optional<Artigo> publicarArtigo(@PathVariable("id") Long id)
     {
@@ -180,6 +186,7 @@ public class ArtigoController
         return service.salveArtigo(artigo);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/{id}")
     public String deletandoArtigo(@PathVariable("id") Long id)
     {
@@ -187,6 +194,7 @@ public class ArtigoController
         return "Sucess";
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping(path = "/{id}/like")
     public Optional<Artigo> likeArtigo(@PathVariable("id") Long id)
     {
@@ -195,6 +203,7 @@ public class ArtigoController
         return service.salveArtigo(artigo);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping(path = "/{id}/notlike")
     public Optional<Artigo> notLikeArtigo(@PathVariable("id") Long id)
     {
