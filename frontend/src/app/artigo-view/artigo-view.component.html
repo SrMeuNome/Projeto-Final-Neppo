@@ -1,0 +1,38 @@
+<div class="container">
+  <mat-card class="cart-artigo" *ngFor="let categoria of categorias">
+    <mat-card-header>
+      <mat-card-title>
+        {{categoria.nome}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <div mat-subheader>Seções</div>
+
+          <mat-list-item *ngFor="let secao of categoria.secoes">
+            <div mat-line>{{secao.nome}}</div>
+            <mat-selection-list mat-line [multiple]="false">
+              <mat-list-option *ngFor="let artigo of secao.artigos">
+                <div mat-line>{{artigo.titulo}}</div>
+                <div mat-line>{{artigo.descricao}}</div>
+                <div mat-line>{{artigo.conteudo}}</div>
+              </mat-list-option>
+            </mat-selection-list>
+          </mat-list-item>
+
+        <div mat-subheader>Artigos</div>
+          <mat-selection-list mat-line [multiple]="false">
+            <mat-list-option *ngFor="let artigo of categoria.artigos">
+              <div mat-line>{{artigo.titulo}}</div>
+              <div mat-line>{{artigo.descricao}}</div>
+              <div mat-line>{{artigo.conteudo}}</div>
+            </mat-list-option>
+          </mat-selection-list>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>
+<mat-paginator [length]="resultsLength"
+              [pageSize]="10"
+              [pageSizeOptions]="pageSizeOptions">
+  </mat-paginator>

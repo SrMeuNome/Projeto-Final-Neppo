@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: 1%;
+  height: auto;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.cart-artigo {
+  max-width: 400px;
+  margin-top: 10%;
+}

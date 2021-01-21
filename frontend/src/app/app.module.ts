@@ -7,18 +7,22 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddArtigoComponent } from './add-artigo/add-artigo.component';
+import { ArtigoViewComponent } from './artigo-view/artigo-view.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    AddArtigoComponent
+    AddArtigoComponent,
+    ArtigoViewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

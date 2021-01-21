@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router, ɵROUTER_PROVIDERS } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'header',

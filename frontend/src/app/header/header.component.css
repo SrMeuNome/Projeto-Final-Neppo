@@ -1,28 +1,71 @@
-div
-{
-    height: 10vh;
-    width: 100vw;
-    background-color:rgba(140, 38, 242, 1);
+.top-bar-menu {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: flex-end;
 }
 
+mat-toolbar {
+  padding: 0%;
+}
+
+.button-logo {
+  text-align: center;
+  padding-right: 8%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: large;
+  height: 100%;
+}
 
 /* Color Theme Swatches in Hex */
-.Vivian-1-hex { color: #8D27F2; }
-.Vivian-2-hex { color: #7F25D9; }
-.Vivian-3-hex { color: #85E7F2; }
-.Vivian-4-hex { color: #7ED955; }
-.Vivian-5-hex { color: #F2BE22; }
+.Vivian-1-hex {
+  color: #8d27f2;
+}
+.Vivian-2-hex {
+  color: #7f25d9;
+}
+.Vivian-3-hex {
+  color: #85e7f2;
+}
+.Vivian-4-hex {
+  color: #7ed955;
+}
+.Vivian-5-hex {
+  color: #f2be22;
+}
 
 /* Color Theme Swatches in RGBA */
-.Vivian-1-rgba { color: rgba(140, 38, 242, 1); }
-.Vivian-2-rgba { color: rgba(126, 36, 216, 1); }
-.Vivian-3-rgba { color: rgba(133, 231, 242, 1); }
-.Vivian-4-rgba { color: rgba(126, 216, 84, 1); }
-.Vivian-5-rgba { color: rgba(242, 190, 33, 1); }
+.Vivian-1-rgba {
+  color: rgba(140, 38, 242, 1);
+}
+.Vivian-2-rgba {
+  color: rgba(126, 36, 216, 1);
+}
+.Vivian-3-rgba {
+  color: rgba(133, 231, 242, 1);
+}
+.Vivian-4-rgba {
+  color: rgba(126, 216, 84, 1);
+}
+.Vivian-5-rgba {
+  color: rgba(242, 190, 33, 1);
+}
 
 /* Color Theme Swatches in HSLA */
-.Vivian-1-hsla { color: hsla(270, 88, 55, 1); }
-.Vivian-2-hsla { color: hsla(270, 70, 49, 1); }
-.Vivian-3-hsla { color: hsla(185, 81, 73, 1); }
-.Vivian-4-hsla { color: hsla(101, 63, 59, 1); }
-.Vivian-5-hsla { color: hsla(45, 89, 54, 1); }
+.Vivian-1-hsla {
+  color: hsla(270, 88, 55, 1);
+}
+.Vivian-2-hsla {
+  color: hsla(270, 70, 49, 1);
+}
+.Vivian-3-hsla {
+  color: hsla(185, 81, 73, 1);
+}
+.Vivian-4-hsla {
+  color: hsla(101, 63, 59, 1);
+}
+.Vivian-5-hsla {
+  color: hsla(45, 89, 54, 1);
+}
