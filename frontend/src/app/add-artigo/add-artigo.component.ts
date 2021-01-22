@@ -47,7 +47,7 @@ export class AddArtigoComponent implements OnInit {
         formData.append('descricao', this.groupSingup.get('descricao').value)
         formData.append('conteudo', this.groupSingup.get('conteudo').value)
         formData.append('tags', this.groupSingup.get('tags').value)
-        this._httpClient.post<Artigo>(`${MEAT_API}/artigos`, formData)
+        this._httpClient.post<Artigo>(`${MEAT_API}/artigos`, formData, { headers: header })
         .pipe(
           catchError(() => of(this.error = true))
         )
