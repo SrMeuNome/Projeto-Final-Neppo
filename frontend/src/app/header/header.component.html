@@ -1,39 +1,45 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="custom-toolbar">
   <button mat-button (click)="goTo('/')" class="button-logo">Body Of Knowledge</button>
   <span class="top-bar-menu">
-      <span class="menu" *ngIf='typeUser === "ADMIN" || typeUser === "USER"'>
+    <span class="menu" *ngIf='typeUser === "ROLE_ADMIN" || typeUser === "ROLE_USUARIO"'>
+      <button mat-button [matMenuTriggerFor]="user"><mat-icon>group</mat-icon> {{nameUser}}</button>
+      <mat-menu #user="matMenu">
+        <button (click)="logOut()" mat-menu-item *ngIf='typeUser === "ROLE_ADMIN" || typeUser === "ROLE_USUARIO"'><mat-icon>logout</mat-icon> Sair</button>
+      </mat-menu>
+    </span>
+      <span class="menu" *ngIf='typeUser === "ROLE_ADMIN" || typeUser === "ROLE_USUARIO"'>
       <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item [matMenuTriggerFor]="article" *ngIf='typeUser === "ADMIN" || typeUser === "USER"'><mat-icon>article</mat-icon> Artigos</button>
-        <button mat-menu-item [matMenuTriggerFor]="tags" *ngIf='typeUser === "ADMIN"'><mat-icon>tags</mat-icon> Tags</button>
-        <button mat-menu-item [matMenuTriggerFor]="secoes" *ngIf='typeUser === "ADMIN"'><mat-icon>tab_unselected</mat-icon> Seções</button>
-        <button mat-menu-item [matMenuTriggerFor]="tags" *ngIf='typeUser === "ADMIN"'><mat-icon>tab</mat-icon> Categorias</button>
-        <button mat-menu-item [matMenuTriggerFor]="usuarios" *ngIf='typeUser === "ADMIN"'><mat-icon>person</mat-icon> Usuários</button>
+        <button mat-menu-item [matMenuTriggerFor]="article" *ngIf='typeUser === "ROLE_ADMIN" || typeUser === "ROLE_USUARIO"'><mat-icon>article</mat-icon> Artigos</button>
+        <button mat-menu-item [matMenuTriggerFor]="tags" *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>tags</mat-icon> Tags</button>
+        <button mat-menu-item [matMenuTriggerFor]="secoes" *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>tab_unselected</mat-icon> Seções</button>
+        <button mat-menu-item [matMenuTriggerFor]="tags" *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>tab</mat-icon> Categorias</button>
+        <button mat-menu-item [matMenuTriggerFor]="usuarios" *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>person</mat-icon> Usuários</button>
       </mat-menu>
 
       <mat-menu #article="matMenu">
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"' (click)="goTo('/criar-artigo')"><mat-icon>add</mat-icon> Criar</button>
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"' (click)="goTo('/criar-artigo')"><mat-icon>add</mat-icon> Criar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
       </mat-menu>
 
       <mat-menu #tags="matMenu">
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>add</mat-icon> Criar</button>
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>add</mat-icon> Criar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
       </mat-menu>
 
       <mat-menu #secoes="matMenu">
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>add</mat-icon> Criar</button>
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>add</mat-icon> Criar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
       </mat-menu>
 
       <mat-menu #categorias="matMenu">
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>add</mat-icon> Criar</button>
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>add</mat-icon> Criar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
       </mat-menu>
 
       <mat-menu #usuarios="matMenu">
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>add</mat-icon> Criar</button>
-        <button mat-menu-item *ngIf='typeUser === "ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>add</mat-icon> Criar</button>
+        <button mat-menu-item *ngIf='typeUser === "ROLE_ADMIN"'><mat-icon>list</mat-icon> Visualizar</button>
       </mat-menu>
     </span>
     <span class="login" *ngIf='!typeUser'>

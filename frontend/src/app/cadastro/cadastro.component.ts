@@ -5,6 +5,8 @@ import { MEAT_API } from '../app.api';
 import {catchError, map, startWith, switchMap} from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { error } from 'protractor';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Usuario } from '../models/usuario.model';
 
 
 @Component({
@@ -14,25 +16,39 @@ import { error } from 'protractor';
 })
 export class CadastroComponent implements OnInit {
 
+  groupSingup: FormGroup
+
   error: boolean = false
 
-  constructor(private router: Router, private _httpClient: HttpClient) {}
+  constructor(private router: Router, private _httpClient: HttpClient, private fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.groupSingup = this.fb.group(
+      {
+        email: [null, Validators.compose([Validators.required, Validators.email])],
+        senha: [null, Validators.compose([Validators.required, Validators.minLength(6)])]
+      }
+    )
 
-  submit(value: any, valid: boolean): void {
-      if(valid)
+  }
+
+  submit(): void {
+      if(this.groupSingup.valid)
       {
         const formData = new FormData()
         this.error = false
-        formData.append('email', value.email)
-        formData.append('senha', value.senha)
-        this._httpClient.post(`${MEAT_API}/usuarios/register`, formData)
+        formData.append('email', this.groupSingup.get('email').value)
+        formData.append('senha', this.groupSingup.get('senha').value)
+        this._httpClient.post<Usuario>(`${MEAT_API}/usuarios/register`, formData)
         .pipe(
           catchError(() => of(this.error = true))
         )
         .subscribe( (data) => {
-          console.log(data)
+          if(!this.error && data)
+          {
+            this.router.navigateByUrl('/')
+            this.groupSingup.reset()
+          }
         })
       }
   }

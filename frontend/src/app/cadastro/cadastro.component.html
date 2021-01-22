@@ -1,23 +1,21 @@
-{{form.value | json}}
-{{form.valid}}
 <div class="container" >
   <mat-card class="card-singin">
     <div class="title-custom">Cadastrar</div>
-    <form (ngSubmit)="submit(form.value, form.valid)" novalidate #form="ngForm" method="POST" class="size">
+    <form [formGroup]="groupSingup" (ngSubmit)="submit()" novalidate method="POST" class="size">
       <div class="space">
         <mat-form-field class="fullsize">
-          <mat-label>Email</mat-label>
-          <input id="email" name="email" type="email" ngModel matInput required autocomplete="email" minlength=5 email>
+          <mat-label>Email:</mat-label>
+          <input id="email" name="email" type="email" formControlName="email" matInput autocomplete="email">
         </mat-form-field>
       </div>
       <div>
         <mat-form-field class="fullsize">
           <mat-label>Senha</mat-label>
-          <input id="senha" name="senha" type="password" ngModel matInput required autocomplete="new-password" minlength=8>
+          <input id="senha" name="senha" type="password" formControlName="senha" matInput autocomplete="new-password" >
         </mat-form-field>
       </div>
       <div class="fullsize btn-container">
-        <button mat-raised-button color="primary" [disabled]="!form.valid">CADASTRAR</button>
+        <button mat-raised-button color="primary" [disabled]="!groupSingup.valid">CADASTRAR</button>
       </div>
     </form>
   </mat-card>
