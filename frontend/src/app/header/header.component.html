@@ -37,8 +37,8 @@
       </mat-menu>
     </span>
     <span class="login" *ngIf='!typeUser'>
-      <button mat-button>Entrar <mat-icon>login</mat-icon></button>
-      <button mat-button>Cadastrar-se <mat-icon>group_add</mat-icon></button>
+      <button mat-button (click)="goTo('/login')">Entrar <mat-icon>login</mat-icon></button>
+      <button mat-button (click)="goTo('/cadastrar')">Cadastrar-se <mat-icon>group_add</mat-icon></button>
     </span>
   </span>
 </mat-toolbar>

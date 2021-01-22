@@ -1,5 +1,14 @@
-<div class="container">
-  <mat-card class="cart-artigo" *ngFor="let categoria of categorias">
+<mat-card class="card-filters">
+    <form>
+      <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input id="text-filter" name="text-filter" type="text" matInput>
+      </mat-form-field>
+      <button mat-icon-button><mat-icon>search</mat-icon></button>
+    </form>
+</mat-card>
+<div class="container" >
+  <mat-card class="card-artigo" *ngFor="let categoria of categorias">
     <mat-card-header>
       <mat-card-title>
         {{categoria.nome}}

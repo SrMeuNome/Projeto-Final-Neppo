@@ -29,9 +29,25 @@ public class Usuario extends AbstractEntity
 
     @JsonIgnore
     @OneToMany(mappedBy = "autor")
-    private transient List<Artigo> artigos;
+    private List<Artigo> artigos;
 
     public Usuario() { super(); }
+
+    public Usuario(@Email(message = "Email não é valido") String email, String senha)
+    {
+        super();
+        this.email = email;
+        this.senha = senha;
+        this.perfil = TipoPerfil.ROLE_USUARIO;
+    }
+
+    public Usuario(@Email(message = "Email não é valido") String email, String senha, TipoPerfil perfil)
+    {
+        super();
+        this.email = email;
+        this.senha = senha;
+        this.perfil = perfil;
+    }
 
     public String getEmail()
     {

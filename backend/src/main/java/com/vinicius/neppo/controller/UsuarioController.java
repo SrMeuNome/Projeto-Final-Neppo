@@ -35,6 +35,7 @@ public class UsuarioController
         return service.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Optional<Usuario> salvarUsuario(
             @RequestParam(value = "email", required = true) String email,
@@ -46,6 +47,21 @@ public class UsuarioController
 
         if (idPerfil == 1) usuario.setPerfil(TipoPerfil.ROLE_ADMIN);
         if (idPerfil == 2) usuario.setPerfil(TipoPerfil.ROLE_USUARIO);
+        usuario.setEmail(email);
+        usuario.setSenha(new BCryptPasswordEncoder().encode(senha));
+        usuario.setAtivo(true);
+        return service.salvarUsuario(usuario);
+    }
+
+    @PostMapping("/register")
+    public Optional<Usuario> salvarUsuarioRegistrar(
+            @RequestParam(value = "email", required = true) String email,
+            @RequestParam(value = "senha", required = true) String senha
+    )
+    {
+        Usuario usuario = new Usuario();
+
+        usuario.setPerfil(TipoPerfil.ROLE_USUARIO);
         usuario.setEmail(email);
         usuario.setSenha(new BCryptPasswordEncoder().encode(senha));
         usuario.setAtivo(true);

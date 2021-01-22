@@ -7,9 +7,13 @@
   height: auto;
   padding-left: 10%;
   padding-right: 10%;
+  padding-bottom: 5%;
 }
 
-.cart-artigo {
+.card-artigo {
   max-width: 400px;
   margin-top: 10%;
+}
+
+.card-filters {
 }

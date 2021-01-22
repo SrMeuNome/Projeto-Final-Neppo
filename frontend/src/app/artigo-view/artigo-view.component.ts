@@ -21,6 +21,8 @@ export class ArtigoViewComponent implements AfterViewInit {
   pageSizeOptions: number[] = [5, 10, 20, 40]
   resultsLength: number
 
+  isFilter: boolean = false
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   database: DataBase | null
